@@ -143,25 +143,43 @@ def user_stats(df):
     start_time = time.time()
 
     # TO DO: Display counts of user types
-    user_breakdown = df['User Type'].value_counts()
-    print("Here is the breakdown of Users:\n", user_breakdown)
+    try:
+        user_breakdown = df['User Type'].value_counts()
+        print("Here is the breakdown of Users:\n", user_breakdown)
+    except KeyError:
+        print("This data does not contain user type data.  Skipping calculation...\n")
 
     # TO DO: Display counts of gender
-    gender_breakdown = df['Gender'].value_counts()
-    print("Here is the breakdown of Gender:\n", gender_breakdown)
+    try:
+        gender_breakdown = df['Gender'].value_counts()
+        print("Here is the breakdown of Gender:\n", gender_breakdown)
+    except:
+        print("This data does not contain gender data.  Skipping calculation...")
 
     # TO DO: Display earliest, most recent, and most common year of birth
-    min_birth_year = df['Birth Year'].min()
-    max_birth_year = df['Birth Year'].max()
-    most_common_birth_year = df['Birth Year'].mode()
+    try:
+        min_birth_year = df['Birth Year'].min()
+        max_birth_year = df['Birth Year'].max()
+        most_common_birth_year = df['Birth Year'].mode()
 
-    print("The oldest user was born in:", int(min_birth_year))
-    print("The youngest user was born in:", int(max_birth_year))
-    print("The most common birth year was:", int(most_common_birth_year))
+        print("The oldest user was born in:", int(min_birth_year))
+        print("The youngest user was born in:", int(max_birth_year))
+        print("The most common birth year was:", int(most_common_birth_year))
+    except KeyError:
+        print("This data does not contain birth year data.  Skipping calculation...")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def display_data(data):
+    i = 0
+    while True:
+        see_data = input("Would you like to see 5 rows of raw data?(yes or no):").lower()
+        if see_data != "yes":
+            break
+        else:
+            print(data[i:i+5])
+            i += 5
 
 def main():
     while True:
@@ -172,6 +190,8 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+
+        display_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
