@@ -143,21 +143,21 @@ def user_stats(df):
     start_time = time.time()
 
     # TO DO: Display counts of user types
-    try:
+    if 'User Type' in df.columns:
         user_breakdown = df['User Type'].value_counts()
         print("Here is the breakdown of Users:\n {}".format(user_breakdown))
-    except KeyError:
+    else:
         print("This data does not contain user type data.  Skipping calculation...\n")
 
     # TO DO: Display counts of gender
-    try:
+    if 'Gender' in df.columns:
         gender_breakdown = df['Gender'].value_counts()
         print("Here is the breakdown of Gender:\n {}".format(gender_breakdown))
-    except:
+    else:
         print("This data does not contain gender data.  Skipping calculation...")
 
     # TO DO: Display earliest, most recent, and most common year of birth
-    try:
+    if 'Birth Year' in df.columns:
         min_birth_year = df['Birth Year'].min()
         max_birth_year = df['Birth Year'].max()
         most_common_birth_year = df['Birth Year'].mode()
@@ -165,7 +165,7 @@ def user_stats(df):
         print("The oldest user was born in: {}".format(int(min_birth_year)))
         print("The youngest user was born in: {}".format(int(max_birth_year)))
         print("The most common birth year was: {}".format(int(most_common_birth_year)))
-    except KeyError:
+    else:
         print("This data does not contain birth year data.  Skipping calculation...")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
