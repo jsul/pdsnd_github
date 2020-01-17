@@ -2,7 +2,7 @@
 01/17/2020
 
 ### Project Title
-Explore US Bikeshare Data
+Interactive Bikeshare Data
 
 ### Description
 This project was created while learning the basics of Python in
