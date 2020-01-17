@@ -80,16 +80,16 @@ def time_stats(df):
     # TO DO: display the most common month
     months = ['January', 'February', 'March', 'April', 'May', 'June']
     most_common_month = months[int(df.mode()['Month'][0]) - 1]
-    print("The month where the most rides started was:", most_common_month)
+    print("The month where the most rides started was: {}".format(most_common_month))
 
     # TO DO: display the most common day of week
     most_common_day = df.mode()['Day of Week'][0]
-    print("The day of the week where the most rides started was:", most_common_day)
+    print("The day of the week where the most rides started was: {}".format(most_common_day))
 
     # TO DO: display the most common start hour
     df['Start Hour'] = df['Start Time'].dt.hour
     most_common_start_hour = int(df.mode()['Start Hour'][0])
-    print("The hour that most rides started was:", most_common_start_hour)
+    print("The hour that most rides started was: {}".format(most_common_start_hour))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -103,16 +103,16 @@ def station_stats(df):
 
     # TO DO: display most commonly used start station
     most_common_start_station = df.mode()['Start Station'][0]
-    print("The most common station users started thier trip from was:", most_common_start_station)
+    print("The most common station users started thier trip from was: {}".format(most_common_start_station))
 
     # TO DO: display most commonly used end station
     most_common_end_station = df.mode()['End Station'][0]
-    print("The most common station users ended their trip with was:", most_common_end_station)
+    print("The most common station users ended their trip with was: {}".format(most_common_end_station))
 
     # TO DO: display most frequent combination of start station and end station trip
     df['Start Station - End Station'] = df['Start Station'] + " - " + df['End Station']
     most_common_trip = df.mode()['Start Station - End Station'][0]
-    print("The most common trip occured between this start and end station:", most_common_trip)
+    print("The most common trip occured between this start and end station: {}".format(most_common_trip))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -126,11 +126,11 @@ def trip_duration_stats(df):
 
     # TO DO: display total travel time
     total_travel_time = df['Trip Duration'].sum() / 60 / 60 /24
-    print("The total time (in days) of all trips was:", total_travel_time)
+    print("The total time (in days) of all trips was: {}".format(total_travel_time))
 
     # TO DO: display mean travel time
     mean_travel_time = (df['Trip Duration'].mean()) / 60
-    print("The average time (in min) of all trips was:", mean_travel_time)
+    print("The average time (in min) of all trips was: {}".format(mean_travel_time))
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
@@ -143,25 +143,43 @@ def user_stats(df):
     start_time = time.time()
 
     # TO DO: Display counts of user types
-    user_breakdown = df['User Type'].value_counts()
-    print("Here is the breakdown of Users:\n", user_breakdown)
+    if 'User Type' in df.columns:
+        user_breakdown = df['User Type'].value_counts()
+        print("Here is the breakdown of Users:\n {}".format(user_breakdown))
+    else:
+        print("This data does not contain user type data.  Skipping calculation...\n")
 
     # TO DO: Display counts of gender
-    gender_breakdown = df['Gender'].value_counts()
-    print("Here is the breakdown of Gender:\n", gender_breakdown)
+    if 'Gender' in df.columns:
+        gender_breakdown = df['Gender'].value_counts()
+        print("Here is the breakdown of Gender:\n {}".format(gender_breakdown))
+    else:
+        print("This data does not contain gender data.  Skipping calculation...")
 
     # TO DO: Display earliest, most recent, and most common year of birth
-    min_birth_year = df['Birth Year'].min()
-    max_birth_year = df['Birth Year'].max()
-    most_common_birth_year = df['Birth Year'].mode()
+    if 'Birth Year' in df.columns:
+        min_birth_year = df['Birth Year'].min()
+        max_birth_year = df['Birth Year'].max()
+        most_common_birth_year = df['Birth Year'].mode()
 
-    print("The oldest user was born in:", int(min_birth_year))
-    print("The youngest user was born in:", int(max_birth_year))
-    print("The most common birth year was:", int(most_common_birth_year))
+        print("The oldest user was born in: {}".format(int(min_birth_year)))
+        print("The youngest user was born in: {}".format(int(max_birth_year)))
+        print("The most common birth year was: {}".format(int(most_common_birth_year)))
+    else:
+        print("This data does not contain birth year data.  Skipping calculation...")
 
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
+def display_data(data):
+    i = 0
+    while True:
+        see_data = input("Would you like to see 5 rows of raw data?(yes or no):").lower()
+        if see_data != "yes":
+            break
+        else:
+            print(data[i:i+5])
+            i += 5
 
 def main():
     while True:
@@ -172,6 +190,8 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df)
+
+        display_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
